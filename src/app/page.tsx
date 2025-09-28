@@ -1,103 +1,139 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+
+import { NavRail } from "@/components/navigation/nav-rail";
+
+const GREETING = "Hi, I'm Abhinav. Welcome!";
+const TRANSITION_DURATION_MS = 1600;
+const INTRO_SEEN_STORAGE_KEY = "introSeen";
+
+type Phase = "intro" | "transition" | "home";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [phase, setPhase] = useState<Phase>("intro");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const introSeen = window.sessionStorage.getItem(INTRO_SEEN_STORAGE_KEY);
+    if (introSeen === "true") {
+      setPhase("home");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (phase !== "transition") {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setPhase("home");
+    }, TRANSITION_DURATION_MS);
+
+    return () => window.clearTimeout(timeout);
+  }, [phase]);
+
+  const handleBegin = () => {
+    if (phase !== "intro") {
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem(INTRO_SEEN_STORAGE_KEY, "true");
+    }
+
+    setPhase("transition");
+  };
+
+  return (
+    <main className={`stage stage--${phase}`}>
+      {phase !== "home" ? (
+        <section className={`intro-hero ${phase !== "intro" ? "intro-hero--exit" : ""}`}>
+          <h1 className="liquid-glass-text" data-text={GREETING}>
+            {GREETING}
+          </h1>
+          <button
+            type="button"
+            className={`glass-button ${phase === "intro" ? "glass-button--visible" : ""}`}
+            onClick={handleBegin}
+            disabled={phase !== "intro"}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Begin
+          </button>
+        </section>
+      ) : null}
+
+      {phase !== "intro" ? <HomeScreen visible={phase === "home"} /> : null}
+      {phase === "transition" ? <div className="warp-overlay" aria-hidden /> : null}
+    </main>
+  );
+}
+
+function HomeScreen({ visible }: { visible: boolean }) {
+  return (
+    <section className={`home-stage ${visible ? "home-stage--visible" : ""}`} aria-hidden={!visible}>
+      <NavRail active="home" />
+      <div className="home-content glass-surface">
+        <header className="home-header">
+          <p className="home-eyebrow">AI Engineer · Product Experimenter</p>
+          <h2 className="home-title">Abhinav Karthik</h2>
+          <p className="home-lead">
+            I prototype intelligent experiences that balance technical ambition with thoughtful craft. From agentic
+            systems to adaptive copilots, I focus on stitching machine learning, product architecture, and human insight
+            into cohesive workflows.
+          </p>
+        </header>
+
+        <div className="home-grid">
+          <article className="home-card">
+            <span className="home-card__badge">At a Glance</span>
+            <p>
+              Builder obsessed with responsible autonomy, evaluators, and realtime decision-making loops. Previously led
+              AI efforts across early-stage startups and internal incubations, shaping platform strategy and launch
+              execution.
+            </p>
+          </article>
+
+          <article className="home-card">
+            <h3 className="home-card__title">Current Focus</h3>
+            <ul className="home-card__list">
+              <li>Designing agent orchestration patterns for applied AI products.</li>
+              <li>Operationalizing evaluation pipelines that close feedback loops quickly.</li>
+              <li>Translating research into lovable, production-ready experiences.</li>
+            </ul>
+          </article>
+
+          <article className="home-card">
+            <h3 className="home-card__title">Selected Strengths</h3>
+            <ul className="home-card__list">
+              <li>Systems thinking across data, UX, and infrastructure layers.</li>
+              <li>Hands-on delivery: full-stack development, LLM integration, observability.</li>
+              <li>Storytelling that helps teams and stakeholders ship with clarity.</li>
+            </ul>
+          </article>
+
+          <article className="home-card">
+            <h3 className="home-card__title">Currently Exploring</h3>
+            <ul className="home-card__list">
+              <li>Human-in-the-loop guardrails for creative AI tooling.</li>
+              <li>Composability patterns for personal knowledge workspaces.</li>
+              <li>Generative interfaces that feel personable, not prescriptive.</li>
+            </ul>
+          </article>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <footer className="home-footer">
+          <span>
+            <strong>Let&apos;s collaborate:</strong> Open to advisory work, product spikes, and co-founding conversations.
+          </span>
+          <span>
+            <strong>Next update:</strong> Portfolio drop documenting recent agents and decisioning flows.
+          </span>
+        </footer>
+      </div>
+    </section>
   );
 }
