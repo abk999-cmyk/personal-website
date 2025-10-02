@@ -78,59 +78,79 @@ function HomeScreen({ visible }: { visible: boolean }) {
       <NavRail active="home" />
       <div className="home-content glass-surface">
         <header className="home-header">
-          <p className="home-eyebrow">AI Engineer · Product Experimenter</p>
+          <p className="home-eyebrow">AI Engineer · Master&apos;s Student</p>
           <h2 className="home-title">Abhinav Karthik</h2>
           <p className="home-lead">
-            I prototype intelligent experiences that balance technical ambition with thoughtful craft. From agentic
-            systems to adaptive copilots, I focus on stitching machine learning, product architecture, and human insight
-            into cohesive workflows.
+            As a master&apos;s student specializing in Artificial Intelligence at Northeastern University, I am passionate 
+            about applying AI/ML solutions to solve complex problems and make a meaningful impact. With a strong foundation 
+            in data science, cloud operations, and AI technologies, I&apos;ve honed my skills in developing intelligent systems 
+            and working with large datasets to extract meaningful insights.
           </p>
         </header>
 
         <div className="home-grid">
           <article className="home-card">
-            <span className="home-card__badge">At a Glance</span>
-            <p>
-              Builder obsessed with responsible autonomy, evaluators, and realtime decision-making loops. Previously led
-              AI efforts across early-stage startups and internal incubations, shaping platform strategy and launch
-              execution.
-            </p>
+            <span className="home-card__badge">Education</span>
+            <div className="home-card__education">
+              <div>
+                <h4>Northeastern University</h4>
+                <p>Master of Science - Artificial Intelligence</p>
+                <p className="text-sm opacity-80">Sep 2024 - May 2026 · GPA: 4.0/4.0</p>
+              </div>
+              <div>
+                <h4>University of Massachusetts Amherst</h4>
+                <p>Bachelor of Science - Computer Engineering</p>
+                <p className="text-sm opacity-80">Jun 2020 - May 2024</p>
+              </div>
+            </div>
           </article>
 
           <article className="home-card">
-            <h3 className="home-card__title">Current Focus</h3>
+            <h3 className="home-card__title">Experience</h3>
             <ul className="home-card__list">
-              <li>Designing agent orchestration patterns for applied AI products.</li>
-              <li>Operationalizing evaluation pipelines that close feedback loops quickly.</li>
-              <li>Translating research into lovable, production-ready experiences.</li>
+              <li>
+                <strong>AI Engineer</strong> at EasyBee AI · Architected persistent long-term memory systems for agentic AI, 
+                reducing latency by ~2 seconds through empirical research and context engineering.
+              </li>
+              <li>
+                <strong>Founder</strong> at BucketListEr · Conceptualized and launched a mobile application connecting 
+                users with like-minded people and organizations to pursue their bucket lists. Managed 3 teams of interns.
+              </li>
+              <li>
+                <strong>IT Intern</strong> at SFJ Business Solutions · Developed software testing tools using Python, 
+                Pandas, and MATLAB for performance analysis.
+              </li>
             </ul>
           </article>
 
           <article className="home-card">
-            <h3 className="home-card__title">Selected Strengths</h3>
+            <h3 className="home-card__title">Top Skills</h3>
             <ul className="home-card__list">
-              <li>Systems thinking across data, UX, and infrastructure layers.</li>
-              <li>Hands-on delivery: full-stack development, LLM integration, observability.</li>
-              <li>Storytelling that helps teams and stakeholders ship with clarity.</li>
+              <li>Artificial Intelligence (AI) & Machine Learning</li>
+              <li>Large Language Models (LLM) & Deep Learning</li>
+              <li>Computer Vision & Regression Models</li>
+              <li>Python, Keras, C++, MATLAB</li>
+              <li>Cloud Operations & Data Science</li>
             </ul>
           </article>
 
           <article className="home-card">
-            <h3 className="home-card__title">Currently Exploring</h3>
+            <h3 className="home-card__title">Certifications</h3>
             <ul className="home-card__list">
-              <li>Human-in-the-loop guardrails for creative AI tooling.</li>
-              <li>Composability patterns for personal knowledge workspaces.</li>
-              <li>Generative interfaces that feel personable, not prescriptive.</li>
+              <li>
+                <strong>Generative AI with Large Language Models</strong><br />
+                DeepLearning.AI & Amazon Web Services · Nov 2024
+              </li>
             </ul>
           </article>
         </div>
 
         <footer className="home-footer">
           <span>
-            <strong>Let&apos;s collaborate:</strong> Open to advisory work, product spikes, and co-founding conversations.
+            <strong>Location:</strong> South Portland, Maine, United States
           </span>
           <span>
-            <strong>Next update:</strong> Portfolio drop documenting recent agents and decisioning flows.
+            <strong>Let&apos;s connect:</strong> Open to opportunities leveraging AI & ML to drive innovation and create value.
           </span>
         </footer>
       </div>
