@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { usePageTransition } from "@/components/layout/page-transition-provider";
 
@@ -11,7 +11,7 @@ interface NavItem {
   key: NavKey;
   label: string;
   href: string;
-  icon: JSX.Element;
+  icon: React.ReactElement;
 }
 
 const navItems: NavItem[] = [
