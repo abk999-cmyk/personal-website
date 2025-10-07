@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { usePageTransition } from "@/components/layout/page-transition-provider";
 
-export type NavKey = "home" | "projects" | "github";
+export type NavKey = "home" | "experience" | "projects" | "github";
 
 interface NavItem {
   key: NavKey;
@@ -22,6 +22,17 @@ const navItems: NavItem[] = [
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path d="M12 4.5 4.5 10.4v8.1A1.5 1.5 0 0 0 6 20h4.1v-4.6h3.8V20H18a1.5 1.5 0 0 0 1.5-1.5v-8.1z" />
+      </svg>
+    ),
+  },
+  {
+    key: "experience",
+    label: "Experience",
+    href: "/experience",
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden>
+        <path d="M20 6.5h-3v-1a2.5 2.5 0 0 0-2.5-2.5h-5A2.5 2.5 0 0 0 7 5.5v1H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-11a2 2 0 0 0-2-2Zm-11.5-1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v1h-7v-1ZM20 19.5H4v-11h16v11Z" />
+        <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
       </svg>
     ),
   },

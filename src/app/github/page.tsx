@@ -4,54 +4,89 @@ import { NavRail } from "@/components/navigation/nav-rail";
 
 const repositories = [
   {
-    name: "agent-lab",
-    summary: "Collection of agent patterns, evaluation utilities, and composable runtime helpers for rapid prototyping.",
-    status: "In development",
+    name: "deepnative",
+    summary: "Native IQ - Turn Slack conversations into actionable business intelligence with AI-powered insights and automation",
+    language: "TypeScript",
+    url: "https://github.com/abk999-cmyk/deepnative",
+    status: "Active",
   },
   {
-    name: "signal-kit",
-    summary: "TypeScript toolkit for ingesting product telemetry and piping it into LLM guardrails and analytics sinks.",
-    status: "Polishing docs",
+    name: "voiceagent",
+    summary: "GenAI-driven voice agent for customer service call centers with real-time ASR/TTS, RAG over Airtable KB, and agent assistance features",
+    language: "Python",
+    url: "https://github.com/abk999-cmyk/voiceagent",
+    status: "Active",
   },
   {
-    name: "glass-ui",
-    summary: "Design experiments for liquid-glass inspired components built with modern CSS and minimal dependencies.",
-    status: "Open-sourcing soon",
+    name: "Battleship",
+    summary: "Genetic Algorithm Optimization for Multi-Strategy Blending in Battleship Game AI - Research implementation combining probability density, CNNs, and Monte Carlo methods",
+    language: "Python",
+    url: "https://github.com/abk999-cmyk/Battleship",
+    status: "Research",
+  },
+  {
+    name: "Cognitive-emotions-tracker",
+    summary: "Cognitive emotions tracking application for monitoring and analyzing emotional states using AI",
+    language: "Python",
+    url: "https://github.com/abk999-cmyk/Cognitive-emotions-tracker",
+    status: "Active",
+  },
+  {
+    name: "personal-website",
+    summary: "Personal portfolio website built with Next.js, TypeScript, and a liquid-glass design aesthetic",
+    language: "TypeScript",
+    url: "https://github.com/abk999-cmyk/personal-website",
+    status: "Active",
   },
 ];
 
 export default function GitHubPage() {
   return (
-    <main className="interior-stage">
-      <NavRail active="github" />
-      <section className="interior-content glass-surface">
-        <header>
-          <h1 className="interior-title">GitHub</h1>
-          <p className="interior-lead">
-            I share tooling, reference implementations, and design studies as they mature. Watch the repos below or reach
-            out if you want early previews.
-          </p>
-        </header>
-        <div className="interior-grid">
-          {repositories.map((repo) => (
-            <article key={repo.name} className="interior-card">
-              <h3>{repo.name}</h3>
-              <p>{repo.summary}</p>
-              <p>
-                <strong>Status:</strong> {repo.status}
-              </p>
+    <main className="page-shell page-shell--idle">
+      <div className="interior-stage">
+        <NavRail active="github" />
+        <section className="interior-content glass-surface">
+          <header>
+            <h1 className="interior-title">GitHub</h1>
+            <p className="interior-lead">
+              Open-source projects and research implementations spanning AI agents, business intelligence, game AI,
+              and full-stack applications. Explore my repositories on GitHub at{" "}
               <Link
-                href="https://github.com/abhinavkarthik"
-                className="home-card__badge"
+                href="https://github.com/abk999-cmyk"
+                style={{ color: "rgba(200, 220, 255, 0.9)", textDecoration: "underline" }}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                View Profile
+                @abk999-cmyk
               </Link>
-            </article>
-          ))}
-        </div>
-      </section>
+              .
+            </p>
+          </header>
+          <div className="interior-grid">
+            {repositories.map((repo) => (
+              <article key={repo.name} className="interior-card">
+                <h3>{repo.name}</h3>
+                <p>{repo.summary}</p>
+                <p>
+                  <strong>Language:</strong> {repo.language}
+                </p>
+                <p>
+                  <strong>Status:</strong> {repo.status}
+                </p>
+                <Link
+                  href={repo.url}
+                  className="home-card__badge"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  style={{ marginTop: "0.5rem", display: "inline-flex" }}
+                >
+                  View Repository
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
