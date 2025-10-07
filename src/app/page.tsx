@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 import { NavRail } from "@/components/navigation/nav-rail";
 import { SidebarStats } from "@/components/layout/sidebar-stats";
@@ -82,19 +84,33 @@ function HomeScreen({ visible }: { visible: boolean }) {
       <NavRail active="home" />
       <div className="home-content glass-surface">
         <header className="home-header">
-          <p className="home-eyebrow">AI Engineer · Master&apos;s Student at Northeastern</p>
-          <h2 className="home-title">Abhinav Karthik</h2>
-          <p className="home-lead">
-            Master&apos;s student specializing in Artificial Intelligence at Northeastern University with a 4.0 GPA. 
-            Passionate about developing agentic AI systems, optimizing large language models, and building intelligent 
-            solutions that solve complex real-world problems. Experience in RAG systems, memory architectures, and 
-            full-stack AI engineering.
-          </p>
+          <div className="home-header__content">
+            <div className="profile-image-container">
+              <Image
+                src="/abhinav-profile.jpg"
+                alt="Abhinav Karthik"
+                width={140}
+                height={140}
+                className="profile-image"
+                priority
+              />
+            </div>
+            <div className="home-header__text">
+              <p className="home-eyebrow">AI Engineer · Master&apos;s Student at Northeastern</p>
+              <h2 className="home-title">Abhinav Karthik</h2>
+              <p className="home-lead">
+                Master&apos;s student specializing in Artificial Intelligence at Northeastern University with a 4.0 GPA. 
+                Passionate about developing agentic AI systems, optimizing large language models, and building intelligent 
+                solutions that solve complex real-world problems. Experience in RAG systems, memory architectures, and 
+                full-stack AI engineering.
+              </p>
+            </div>
+          </div>
         </header>
 
         <div className="home-grid">
           <article className="home-card">
-            <span className="home-card__badge">Education</span>
+            <h3 className="home-card__title">Education</h3>
             <div className="home-card__education">
               <div>
                 <h4>Northeastern University</h4>
@@ -122,13 +138,10 @@ function HomeScreen({ visible }: { visible: boolean }) {
             <h3 className="home-card__title">Current Focus</h3>
             <ul className="home-card__list">
               <li>
-                <strong>AI Engineer</strong> at EasyBee AI (Jun 2025 - Sep 2025) · Architected persistent long-term 
-                memory systems for agentic AI, reducing latency by ~2 seconds. Led development of admin dashboard 
-                with RAG-powered knowledge base creation.
-              </li>
-              <li>
                 <strong>Research</strong> · Genetic Algorithm Optimization for Multi-Strategy Blending in Battleship 
-                Game AI. Combining probability density functions, convolutional neural networks, and Monte Carlo methods.
+                Game AI (May 2025 - Present, Northeastern University). Combining probability density functions, 
+                convolutional neural networks, and Monte Carlo methods. Achieved 5% improvement over SOTA, 
+                currently preparing conference paper submission.
               </li>
             </ul>
           </article>
@@ -174,6 +187,12 @@ function HomeScreen({ visible }: { visible: boolean }) {
             <h3 className="home-card__title">Volunteering & Leadership</h3>
             <ul className="home-card__list">
               <li>
+                <strong>BucketListEr</strong> · Founder (Jan 2021 - May 2024)<br />
+                Conceptualized and launched mobile application connecting users with like-minded people and organizations 
+                to pursue their bucket lists. Created, hired, and managed 3 teams of interns (investor search, marketing, 
+                and hiring) at nearly no cost, demonstrating resourceful leadership and team-building capabilities.
+              </li>
+              <li>
                 <strong>Phi Delta Theta</strong> · Vice President/Founding Member (Mar 2023 - Mar 2024)<br />
                 Initiated and conducted charity drives, raising funds and organizing service events to support families 
                 affected by ALS in collaboration with the &apos;Live Like Lou Foundation&apos;
@@ -192,10 +211,18 @@ function HomeScreen({ visible }: { visible: boolean }) {
             <strong>Phone:</strong> 413-379-6633
           </span>
           <span>
-            <strong>LinkedIn:</strong> linkedin.com/in/abhinavkarthik/
+            <strong>LinkedIn:</strong>{" "}
+            <Link
+              href="https://linkedin.com/in/abhinavkarthik/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "rgba(200, 220, 255, 0.9)", textDecoration: "underline" }}
+            >
+              linkedin.com/in/abhinavkarthik/
+            </Link>
           </span>
           <span>
-            <strong>Location:</strong> Boston, Massachusetts, United States
+            <strong>Location:</strong> Portland, ME
           </span>
         </footer>
       </div>

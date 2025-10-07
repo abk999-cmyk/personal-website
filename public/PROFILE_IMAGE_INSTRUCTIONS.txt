@@ -1,0 +1,9 @@
+Please place your profile picture (graduation photo) here as "abhinav-profile.jpg"
+
+The image should be:
+- Named: abhinav-profile.jpg
+- Format: JPG/JPEG
+- Recommended size: At least 300x300 pixels (will be displayed at 140x140px)
+- Square or portrait orientation works best
+
+Once placed, the website will automatically display your profile picture on the home page.

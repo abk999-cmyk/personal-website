@@ -6,10 +6,6 @@ export function SidebarStats() {
         <div className="sidebar-stats__label">GPA at Northeastern</div>
       </div>
       <div className="sidebar-stats__item">
-        <div className="sidebar-stats__value">4+</div>
-        <div className="sidebar-stats__label">Years of Experience</div>
-      </div>
-      <div className="sidebar-stats__item">
         <div className="sidebar-stats__value">6</div>
         <div className="sidebar-stats__label">Certifications</div>
       </div>
