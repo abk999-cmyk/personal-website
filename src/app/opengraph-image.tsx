@@ -26,10 +26,9 @@ export default function OpenGraphImage() {
           <div style={{ width: 12, height: 12, borderRadius: 12, background: "#d4ff3a" }} />
           AI ENGINEER · BOSTON, MA
         </div>
-        <div style={{ fontSize: 132, fontWeight: 800, letterSpacing: -6, lineHeight: 0.95, marginTop: 20 }}>
-          Abhinav
-          <br />
-          Karthik
+        <div style={{ display: "flex", flexDirection: "column", fontSize: 132, fontWeight: 800, letterSpacing: -6, lineHeight: 0.95, marginTop: 20 }}>
+          <div>Abhinav</div>
+          <div>Karthik</div>
         </div>
         <div style={{ marginTop: 28, fontSize: 30, color: "#8b8b90", maxWidth: 900, lineHeight: 1.3 }}>
           Agents, optimisation and evolutionary systems that actually ship.

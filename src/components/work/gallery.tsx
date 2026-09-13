@@ -22,6 +22,7 @@ export function Gallery({ images }: { images: ProjectImage[] }) {
                 alt={img.alt}
                 fill
                 sizes={img.kind === "mobile" ? "(max-width: 768px) 100vw, 33vw" : "(max-width: 768px) 100vw, 66vw"}
+                priority={i === 0}
                 className="object-cover object-top"
               />
             </div>

@@ -105,7 +105,8 @@ export function drawBoard(ctx: CanvasRenderingContext2D, game: Game | null, o: D
       for (let i = 0; i < CELLS; i++) {
         const h = game.heat[i];
         if (h <= 0) continue;
-        const step = Math.round(Math.pow(h / max, 0.75) * HEAT_STEPS);
+        // Gamma > 1 keeps the shallow hunt-mode dome readable instead of a flat wash.
+        const step = Math.round(Math.pow(h / max, 1.6) * HEAT_STEPS);
         if (step === 0) continue;
         ctx.fillStyle = HEAT_FILL[step];
         ctx.fillRect(x0 + (i % SIZE) * cell, y0 + Math.floor(i / SIZE) * cell, cell, cell);

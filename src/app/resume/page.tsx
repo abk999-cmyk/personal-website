@@ -61,7 +61,7 @@ export default function ResumePage() {
       <Section title="Experience">
         <ol className="space-y-8">
           {experience.map((e) => (
-            <li key={e.id} className="grid gap-2 md:grid-cols-12 md:gap-6">
+            <li key={e.id} className="entry grid gap-2 md:grid-cols-12 md:gap-6">
               <div className="md:col-span-3">
                 <p className="num text-[13px] text-muted">{fmtRange(e.start, e.end)}</p>
                 <p className="font-mono text-[11px] text-dim">{e.location}</p>
@@ -89,7 +89,7 @@ export default function ResumePage() {
       <Section title="Research">
         <ul className="space-y-5">
           {papers.map((p) => (
-            <li key={p.id} className="grid gap-2 md:grid-cols-12 md:gap-6">
+            <li key={p.id} className="entry grid gap-2 md:grid-cols-12 md:gap-6">
               <div className="md:col-span-3">
                 <p className="num text-[13px] text-muted">{p.year}</p>
                 <p className="font-mono text-[11px] text-dim">{p.status}</p>
@@ -107,7 +107,7 @@ export default function ResumePage() {
       <Section title="Selected projects">
         <ul className="space-y-4">
           {projects.map((p) => (
-            <li key={p.slug} className="grid gap-1 md:grid-cols-12 md:gap-6">
+            <li key={p.slug} className="entry grid gap-1 md:grid-cols-12 md:gap-6">
               <p className="num text-[13px] text-muted md:col-span-3">{p.year}</p>
               <p className="text-[14px] leading-relaxed md:col-span-9">
                 <span className="font-semibold text-text">{p.name}</span>
@@ -121,7 +121,7 @@ export default function ResumePage() {
       <Section title="Education">
         <ul className="space-y-4">
           {profile.education.map((ed) => (
-            <li key={ed.school} className="grid gap-1 md:grid-cols-12 md:gap-6">
+            <li key={ed.school} className="entry grid gap-1 md:grid-cols-12 md:gap-6">
               <p className="num text-[13px] text-muted md:col-span-3">
                 {fmtMonth(ed.start)} — {fmtMonth(ed.end)}
               </p>
@@ -137,7 +137,7 @@ export default function ResumePage() {
       <Section title="Skills">
         <ul className="space-y-2">
           {skillGroups.map((g) => (
-            <li key={g.id} className="grid gap-1 text-[14px] md:grid-cols-12 md:gap-6">
+            <li key={g.id} className="entry grid gap-1 text-[14px] md:grid-cols-12 md:gap-6">
               <p className="font-mono text-[11px] uppercase tracking-widest text-dim md:col-span-3 md:pt-1">{g.name}</p>
               <p className="text-muted md:col-span-9">{g.skills.join(" · ")}</p>
             </li>

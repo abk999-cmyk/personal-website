@@ -157,15 +157,29 @@ body {
 
 /* ---------- print (resume) ---------- */
 @media print {
-  html, body { background: #fff !important; color: #111 !important; }
-  header, footer, #voiceflow-chat, [data-nextjs-toast], nextjs-portal { display: none !important; }
+  html, body { background: #fff !important; color: #111 !important; font-size: 9pt; line-height: 1.3; }
+  body > header, body > footer, #voiceflow-chat, nextjs-portal { display: none !important; }
   .resume { padding: 0 !important; max-width: none !important; }
-  .resume .display { font-size: 28pt !important; }
-  .resume * { color: #111 !important; border-color: #ddd !important; }
-  .resume .text-muted, .resume .text-dim { color: #444 !important; }
-  .resume section { padding: 12pt 0 !important; break-inside: avoid; }
+  .resume .display { font-size: 20pt !important; line-height: 1 !important; }
+  .resume * { color: #111 !important; border-color: #ccc !important; }
+  .resume .text-muted, .resume .text-dim, .resume .eyebrow { color: #555 !important; }
+  .resume header { padding-bottom: 8pt !important; gap: 4pt !important; }
+  .resume header .mt-3 { margin-top: 3pt !important; }
+  .resume header .mt-5 { margin-top: 4pt !important; }
+  .resume section { padding: 6pt 0 !important; gap: 4pt !important; display: grid !important; grid-template-columns: 74pt 1fr !important; }
+  .resume section > * { grid-column: auto !important; }
+  .resume section li.entry { display: grid !important; grid-template-columns: 92pt 1fr !important; gap: 6pt !important; break-inside: avoid; }
+  .resume section li.entry > * { grid-column: auto !important; }
+  .resume section li.entry li { display: flex !important; gap: 4pt !important; }
+  .resume .space-y-8 > * + * { margin-top: 6pt !important; }
+  .resume .space-y-5 > * + *, .resume .space-y-4 > * + * { margin-top: 4pt !important; }
+  .resume .space-y-1\.5 > * + *, .resume .space-y-2 > * + * { margin-top: 1.5pt !important; }
+  .resume .mt-2 { margin-top: 2pt !important; }
+  .resume .text-\[15px\], .resume .text-\[14px\], .resume .text-lg { font-size: 9pt !important; line-height: 1.3 !important; }
+  .resume .text-\[13px\], .resume .text-\[12px\], .resume .text-\[11px\] { font-size: 8pt !important; }
   .resume a { text-decoration: none !important; }
-  @page { margin: 14mm; }
+  .resume .bg-accent { background: #111 !important; }
+  @page { size: Letter; margin: 10mm 12mm; }
 }
 
 @keyframes contract-scan {

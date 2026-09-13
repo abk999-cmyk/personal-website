@@ -46,7 +46,7 @@ export function DeviceMockup({ desktop, mobile, compact = false }: { desktop: Pr
         {/* laptop */}
         <div className="relative rounded-[10px] border border-line-2 bg-[#0d0d0f] p-[6px] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9)]">
           <div className="relative aspect-[16/10] overflow-hidden rounded-[6px] bg-surface">
-            <Image src={desktop.src} alt={desktop.alt} fill sizes="(max-width: 768px) 90vw, 800px" className="object-cover object-top" />
+            <Image src={desktop.src} alt={desktop.alt} fill priority={!compact} sizes="(max-width: 768px) 90vw, 800px" className="object-cover object-top" />
           </div>
         </div>
         <div className="mx-auto h-[6px] w-[70%] rounded-b-md bg-[#1a1a1d]" />
