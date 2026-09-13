@@ -1,0 +1,29 @@
+## The scheduling problem nobody wants to own
+
+A cardiovascular service line runs on a yearly call schedule. Roughly sixty physicians across electrophysiology, interventional cardiology, heart failure, imaging and general cardiology have to cover 46 services every week of the year, with exact headcounts per role on normal days, a single physician on holidays, prescheduled roles that cannot move, hard maximums and soft minimums per person, and the accumulated preferences of people who have been doing this for decades. It used to be assembled by hand over weeks.
+
+With Dr. Edward Sze and Prof. Jonathan Mwaura at the Roux Institute, I turned it into an optimisation problem and shipped the tool that solves it.
+
+## Architecture
+
+- **Mixed-integer linear programming** on Google OR-Tools CBC. Every physician × day × role is a candidate variable; constraints encode coverage, balance, prescheduled roles and holiday rules.
+- **A cascading multi-stage solver.** Holidays and fixed roles first, then a call-coverage skeleton, then each subspecialty group in turn. Each stage's decisions become constraints for the next, so downstream solves are small and fast.
+- **Registry-based constraint engine** with 14 configurable hard and soft constraint types. Adding a rule means registering it, not rewriting the model.
+- **Performance work that made it usable:** block variable compression, per-group skeleton decomposition, and upstream-aware constraint propagation. A full year solves in under four minutes.
+
+The result is 8,500+ weekly assignments with a 91% happiness score, where happiness is the fraction of soft preferences satisfied.
+
+## The product
+
+The solver is wrapped in a Flask web application the schedulers actually use. Upload an Excel workbook with three sheets (daily requirements, physician limits, prescheduled roles), get validation with specific error messages when the input is inconsistent, watch solve progress in real time, download the finished schedule as Excel for clinical deployment. A sibling app produces the annual call-schedule *skeleton*, step 2 of the department's yearly scheduling pathway, with one tab per service.
+
+<div className="aside">
+
+<span className="eyebrow block mb-2">What the demo above is running</span>
+The real solver is server-side Python. The visual above is a deterministic replay of the cascade: holidays, skeleton, then group by group, with a small greedy assigner keeping the fill pattern honest and the readouts scaled from the real system's numbers.
+
+</div>
+
+## What I'd tell another engineer
+
+The hard part was not the MILP. It was decomposition: which decisions can be frozen early without making later stages infeasible, and how to propagate them so each solve stays small. Once the cascade was right, the solver time dropped from hours to minutes and the clinicians started trusting it.

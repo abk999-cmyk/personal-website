@@ -1,0 +1,39 @@
+## Two ways to replace a population
+
+A generational GA replaces the whole population every iteration. Turnover is high, selection pressure per individual is weak, and the search stays broad. A steady-state GA replaces one or two individuals at a time. Pressure is strong, the population changes slowly, and promising regions get exploited fast, sometimes before the search has seen enough of the landscape.
+
+Neither wins everywhere, and their relative merit changes during a single run. The obvious hybrid, start generational and switch to steady-state at a fixed generation, works, but it moves the problem: now you have to pick the switch point, and a switch point that suits one problem is wrong for the next.
+
+## DEGA, and a trigger you don't have to tune
+
+DEGA (Dynamic Evolution with Generational–Steady-State Adaptation) is a single framework that contains both regimes with shared representation, fitness, selection and variation operators. The only thing that changes at the switch is how many individuals are replaced per outer iteration.
+
+**Method 2** decides when to switch from quantities the algorithm already tracks:
+
+- the **elite centroid**, the mean position of the top fraction of the population, and its displacement from one iteration to the next, `δ_t`;
+- the **elite fitness variance**, `v_t`.
+
+The trigger fires, once, when the 10-iteration rolling mean of `δ_t` falls below **2%** of the first non-zero displacement *and* `v_t` falls below **10%** of its initial value, after a minimum number of generational iterations. Both are normalised by their own reference values, so the same thresholds apply across problems without recalibration. The centroid condition says the elite region has stopped moving; the variance condition says the elite set has actually collapsed rather than merely circling a stable mean. The result is denoted DynDEGA-M2.
+
+## Evaluation
+
+Three neural-network weight-optimisation problems of increasing dimensionality (XOR, Iris, Wine), 20 matched-seed runs each, against pure GGA, pure SSGA and six fixed-schedule DEGA variants that switch at predetermined quartiles. Paired Wilcoxon signed-rank tests.
+
+| | Iris | Wine | XOR |
+| --- | --- | --- | --- |
+| DynDEGA-M2 successes | 20 / 20 | 20 / 20 | 20 / 20 |
+| Mean result | 0.9967 acc. | 0.9986 acc. | ≈ 1.0000 (1 − MSE) |
+| Trigger fired at | 12.9% of budget | 7.4% | 26.6% |
+
+On every benchmark the dynamic variant lands within one reported standard deviation of the best fixed-schedule mean, and the trigger fired in all 60 runs without anyone choosing a switch point.
+
+<div className="aside">
+
+<span className="eyebrow block mb-2">What the demo above is running</span>
+The demo runs the same GGA → SSGA machinery and the same Method 2 thresholds on 2-D test landscapes so you can watch the centroid stall and the switch fire. The paper's benchmarks are neural-network weight spaces, which are harder to draw.
+
+</div>
+
+## Why I care about this
+
+Most adaptive evolutionary methods tune scalar parameters inside one replacement regime. Switching the regime itself has had far less attention, and the few hybrids that exist make the practitioner pick the moment. A parameter-light, interpretable trigger that reads the search state directly is the kind of tool I want in every optimiser I build, including the ones that schedule physicians.

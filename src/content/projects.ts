@@ -11,7 +11,7 @@ export type Project = {
   stack: string[];
   metrics?: { value: string; label: string }[];
   /** Which live demo component to embed, if any. */
-  demo?: "battleship" | "dyndega" | "scheduler";
+  demo?: "battleship" | "dyndega" | "scheduler" | "arena";
   /** Visual treatment for the tile when there is no demo. */
   visual: "demo" | "device" | "shot" | "abstract";
   repo?: string;
@@ -19,8 +19,15 @@ export type Project = {
   /** Tile size in the work grid. */
   size: "xl" | "lg" | "md" | "half";
   featured: boolean;
-  /** Screenshot keys resolved from /public/work/<slug>/ at build time. */
-  images?: string[];
+  /** Screenshots under /public/work/<slug>/. First one is the tile art for "shot" visuals. */
+  images?: ProjectImage[];
+};
+
+export type ProjectImage = {
+  src: string;
+  alt: string;
+  kind: "desktop" | "mobile";
+  caption?: string;
 };
 
 export const projects: Project[] = [
@@ -84,6 +91,12 @@ export const projects: Project[] = [
     visual: "demo",
     size: "lg",
     featured: true,
+    images: [
+      { src: "/work/mainehealth-scheduler/ep-monthly-ep-result-desktop.webp", alt: "Schedule generated with happiness score", kind: "desktop", caption: "Monthly optimiser: a solve on the sample EP input, ready to download" },
+      { src: "/work/mainehealth-scheduler/scheduler-skeleton-ep-tab-desktop.webp", alt: "Yearly skeleton app EP tab", kind: "desktop", caption: "Yearly call-schedule skeleton: uploads and prior-year carry-forward" },
+      { src: "/work/mainehealth-scheduler/scheduler-skeleton-ep-result-desktop.webp", alt: "Skeleton solve result", kind: "desktop", caption: "52 weekly assignments, 7 holidays, 12 monthly files, solved in 0.28s" },
+      { src: "/work/mainehealth-scheduler/ep-monthly-ep-upload-desktop.webp", alt: "Monthly optimiser upload", kind: "desktop", caption: "Drag-and-drop workbook upload" },
+    ],
   },
   {
     slug: "7d-connect",
@@ -98,6 +111,14 @@ export const projects: Project[] = [
     visual: "device",
     size: "lg",
     featured: true,
+    images: [
+      { src: "/work/7d-connect/7d-connect-admin-dashboard-desktop.webp", alt: "7D Connect admin dashboard", kind: "desktop", caption: "Super-admin dashboard: routes, students, drivers, vendors, live attendance and trip sessions" },
+      { src: "/work/7d-connect/7d-connect-ios-active-trip-attendance-mobile.webp", alt: "iOS driver app during an active trip", kind: "mobile", caption: "iOS driver app: per-student pickup and absence capture with GPS stamps" },
+      { src: "/work/7d-connect/7d-connect-admin-vendors-incidents-desktop.webp", alt: "Incident dashboard with map and photos", kind: "desktop", caption: "Incident management with map, photos and vendor review" },
+      { src: "/work/7d-connect/7d-connect-admin-routes-desktop.webp", alt: "Routes list", kind: "desktop", caption: "Route management" },
+      { src: "/work/7d-connect/7d-connect-ios-start-trip-inspection-mobile.webp", alt: "Start trip sheet with mileage and inspection", kind: "mobile", caption: "Start Trip: starting mileage and pre-trip inspection" },
+      { src: "/work/7d-connect/7d-connect-android-report-incident-mobile.webp", alt: "Android incident report form", kind: "mobile", caption: "Android driver app: incident report with photos and GPS pin" },
+    ],
   },
   {
     slug: "state-street-legal-ai",
@@ -127,6 +148,12 @@ export const projects: Project[] = [
     repo: "https://github.com/abk999-cmyk/luna-os",
     size: "md",
     featured: true,
+    images: [
+      { src: "/work/luna-os/luna-os-multi-window-desktop.webp", alt: "Luna OS with four glass windows open", kind: "desktop", caption: "Spreadsheet, Kanban, Calendar and Notes as translucent windows over the LLM chat sidebar" },
+      { src: "/work/luna-os/luna-os-home-desktop.webp", alt: "Luna OS home surface", kind: "desktop", caption: "Home: greeting, weather and schedule tiles, suggestion chips" },
+      { src: "/work/luna-os/luna-os-command-palette-desktop.webp", alt: "Luna OS command palette", kind: "desktop", caption: "⌘K palette with AI search across notes, contacts, calendar and files" },
+      { src: "/work/luna-os/luna-os-app-launcher-desktop.webp", alt: "Luna OS app launcher", kind: "desktop", caption: "The 20-app launcher" },
+    ],
   },
   {
     slug: "marl-hide-and-seek",
@@ -138,7 +165,8 @@ export const projects: Project[] = [
     context: "research",
     contextLabel: "Research · Northeastern",
     stack: ["Python", "PPO", "Webots", "MuJoCo", "PyTorch"],
-    visual: "shot",
+    demo: "arena",
+    visual: "demo",
     repo: "https://github.com/abk999-cmyk/marl-hide-and-seek",
     size: "half",
     featured: true,
@@ -157,6 +185,12 @@ export const projects: Project[] = [
     repo: "https://github.com/abk999-cmyk/genome-explorer",
     size: "half",
     featured: true,
+    images: [
+      { src: "/work/genome-explorer/genome-explorer-explorer-desktop.webp", alt: "3D DNA helix with labelled finding nodes", kind: "desktop", caption: "Every finding pinned on a WebGL double helix; the pathogenic node pulses red" },
+      { src: "/work/genome-explorer/genome-explorer-landing-desktop.webp", alt: "Genome Explorer landing", kind: "desktop", caption: "Landing: report summary and stat tiles" },
+      { src: "/work/genome-explorer/genome-explorer-detail-drawer-desktop.webp", alt: "Detail drawer for KCNH2", kind: "desktop", caption: "Focus-trapped detail drawer with ACMG evidence breakdown" },
+      { src: "/work/genome-explorer/genome-explorer-headline-desktop.webp", alt: "Headline finding with animated ECG", kind: "desktop", caption: "The LQT2 headline finding with an animated prolonged-QT ECG" },
+    ],
   },
   // ---- honourable mentions (rendered as a compact list) ----
   {
@@ -172,6 +206,10 @@ export const projects: Project[] = [
     repo: "https://github.com/abk999-cmyk/misalignment-sandbox-experiment",
     size: "md",
     featured: false,
+    images: [
+      { src: "/work/misalignment-sandbox/misalignment-sandbox-landing-desktop.webp", alt: "Monitoring dashboard", kind: "desktop", caption: "Monitoring dashboard: scenario metrics, time controls, raw chain-of-thought stream" },
+      { src: "/work/misalignment-sandbox/misalignment-sandbox-admin-controls-desktop.webp", alt: "Admin controls", kind: "desktop", caption: "Prompt profiles, tool toggles and guardrails" },
+    ],
   },
   {
     slug: "emotion-tracker",
@@ -186,6 +224,9 @@ export const projects: Project[] = [
     repo: "https://github.com/abk999-cmyk/Cognitive-emotions-tracker",
     size: "md",
     featured: false,
+    images: [
+      { src: "/work/emotion-tracker/cognitive-emotions-tracker-dashboard-fullpage-desktop.webp", alt: "Emotion tracking dashboard", kind: "desktop", caption: "Live emotion timeline, video feed, scores and the emotion-aware assistant" },
+    ],
   },
   {
     slug: "lawn-segmentation",
@@ -200,6 +241,9 @@ export const projects: Project[] = [
     repo: "https://github.com/abk999-cmyk/AI_land_measuring_tool",
     size: "md",
     featured: false,
+    images: [
+      { src: "/work/lawn-segmentation/ai-land-measuring-tool-segmentation-overlay-desktop.webp", alt: "Segmented lawn overlay on satellite imagery", kind: "desktop", caption: "ResNet34-UNet segmentation painted over the satellite crop" },
+    ],
   },
   {
     slug: "sequence-lab",
@@ -214,6 +258,9 @@ export const projects: Project[] = [
     repo: "https://github.com/abk999-cmyk/Sequence",
     size: "md",
     featured: false,
+    images: [
+      { src: "/work/sequence-lab/sequence-lab-live-ai-vs-ai-desktop.webp", alt: "Live AI vs AI Sequence game with diagnostics", kind: "desktop", caption: "Belief Monte Carlo vs greedy, with belief entropy and move probabilities" },
+    ],
   },
   {
     slug: "easybee-memory",

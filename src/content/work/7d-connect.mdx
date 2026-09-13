@@ -1,0 +1,26 @@
+## What it does
+
+School districts contract transportation out to vendors, and vendors run fleets of drivers. 7D Connect is the operations layer that sits across all three: districts see their students and routes, vendors manage drivers, vehicles and route assignments, and drivers run their day from a phone.
+
+- **Super admin.** Creates districts, schools, students, vendors, routes and assignments; reviews incidents, exports data, manages backups, can impersonate a vendor account for support.
+- **Vendor admin.** Manages the company's drivers and vehicles, reassigns driver or vehicle on a route, monitors completion.
+- **District.** Read-only, district-scoped view of students, routes and attendance.
+- **Driver.** Mobile only. Sees assigned routes, starts and finishes trips, captures attendance with GPS stamps, logs mileage, completes inspection checklists, files incident reports.
+
+## Architecture
+
+One repository, three applications, one PostgreSQL schema via Prisma.
+
+```
+apps/web/       Next.js 16 + React 19 — browser UI *and* the mobile REST backend
+apps/ios/       Native SwiftUI driver app
+apps/android/   Native Kotlin / Jetpack Compose driver app
+prisma/         Schema and migrations
+scripts/        Nightly backup
+```
+
+The web app is the single backend for the platform. It serves the admin, vendor and district interfaces in the browser and exposes the `api/mobile` REST endpoints the native apps consume. The mobile apps are deliberately thin: they authenticate with a JWT and call the API; all business logic and storage lives in one place. That decision is what let a small team ship three clients without three sets of rules drifting apart.
+
+## Things that took longer than they should have
+
+Attendance is the heart of the product and the hardest thing to get right on a moving bus with intermittent connectivity. The driver apps queue captures locally with GPS and timestamps and reconcile when the network returns. Incident reporting had to work the same way. Everything else was ordinary CRUD with a careful role model.

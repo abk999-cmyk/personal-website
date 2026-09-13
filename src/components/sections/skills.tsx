@@ -12,13 +12,13 @@ export function Skills() {
           <>
             The stack,
             <br />
-            grouped by what it's for.
+            grouped by what it&apos;s for.
           </>
         }
       />
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
         {skillGroups.map((g, i) => (
-          <Reveal key={g.id} delay={i * 0.05} className="rounded-2xl border border-line bg-surface p-6">
+          <Reveal key={g.id} delay={i * 0.05} className={`rounded-2xl border border-line bg-surface p-6 ${i < 3 ? "lg:col-span-2" : "lg:col-span-3"}`}>
             <p className="eyebrow" style={{ color: `oklch(0.8 0.17 ${g.hue})` }}>
               {g.name}
             </p>

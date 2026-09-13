@@ -131,3 +131,48 @@ body {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ---------- long-form case studies ---------- */
+.study { color: var(--color-muted); font-size: 1.05rem; line-height: 1.75; }
+.study .lead { color: var(--color-text); font-size: 1.2rem; line-height: 1.65; margin-bottom: 2.5rem; }
+.study h2 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; color: var(--color-text); font-size: 1.75rem; margin: 3rem 0 1rem; }
+.study h3 { color: var(--color-text); font-weight: 600; font-size: 1.1rem; margin: 2rem 0 0.6rem; }
+.study p { margin: 0 0 1.25rem; }
+.study ul, .study ol { margin: 0 0 1.25rem; padding-left: 1.2rem; }
+.study li { margin: 0.35rem 0; }
+.study li::marker { color: var(--color-accent); }
+.study strong { color: var(--color-text); font-weight: 600; }
+.study a { color: var(--color-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--color-line-2); }
+.study a:hover { text-decoration-color: var(--color-accent); }
+.study code { font-family: var(--font-mono); font-size: 0.9em; color: var(--color-text); background: var(--color-surface-2); padding: 0.1em 0.35em; border-radius: 4px; }
+.study pre { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: 12px; padding: 1rem 1.2rem; overflow-x: auto; margin: 0 0 1.5rem; }
+.study pre code { background: none; padding: 0; font-size: 0.85rem; }
+.study blockquote { margin: 2rem 0; padding-left: 1.2rem; border-left: 2px solid var(--color-accent); color: var(--color-text); font-size: 1.15rem; }
+.study hr { border: 0; border-top: 1px solid var(--color-line); margin: 2.5rem 0; }
+.study table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 0 0 1.5rem; display: block; overflow-x: auto; }
+.study th, .study td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--color-line); vertical-align: top; }
+.study th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-dim); }
+.study .aside { border: 1px solid var(--color-line); border-radius: 12px; padding: 1rem 1.2rem; font-size: 0.95rem; margin: 0 0 1.5rem; }
+.study .aside .eyebrow { margin-bottom: 0.4rem; }
+
+/* ---------- print (resume) ---------- */
+@media print {
+  html, body { background: #fff !important; color: #111 !important; }
+  header, footer, #voiceflow-chat, [data-nextjs-toast], nextjs-portal { display: none !important; }
+  .resume { padding: 0 !important; max-width: none !important; }
+  .resume .display { font-size: 28pt !important; }
+  .resume * { color: #111 !important; border-color: #ddd !important; }
+  .resume .text-muted, .resume .text-dim { color: #444 !important; }
+  .resume section { padding: 12pt 0 !important; break-inside: avoid; }
+  .resume a { text-decoration: none !important; }
+  @page { margin: 14mm; }
+}
+
+@keyframes contract-scan {
+  0% { transform: translateY(-40px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(320px); opacity: 0; }
+}
+.contract-scan { animation: contract-scan 5s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .contract-scan { animation: none; opacity: 0; } }

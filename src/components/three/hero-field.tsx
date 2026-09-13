@@ -30,7 +30,8 @@ export function HeroField() {
     } catch {
       gl = null;
     }
-    setMode(!reduce && gl ? "3d" : "poster");
+    const id = requestAnimationFrame(() => setMode(!reduce && gl ? "3d" : "poster"));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   return (

@@ -58,7 +58,7 @@ const FRAG = /* glsl */ `
   }
 `;
 
-function makeGeometry(count: number) {
+function makeArrays(count: number) {
   const sphere = new Float32Array(count * 3);
   const grid = new Float32Array(count * 3);
   const seed = new Float32Array(count);
@@ -86,42 +86,29 @@ function makeGeometry(count: number) {
     grid[i * 3 + 2] = gz;
     seed[i] = rnd();
   }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.BufferAttribute(sphere, 3));
-  g.setAttribute("aSphere", new THREE.BufferAttribute(sphere, 3));
-  g.setAttribute("aGrid", new THREE.BufferAttribute(grid, 3));
-  g.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
-  return g;
+  return { sphere, grid, seed };
 }
 
 function Field({ count, onReady }: { count: number; onReady: () => void }) {
   const group = useRef<THREE.Group>(null);
+  const mat = useRef<THREE.ShaderMaterial>(null);
   const target = useRef({ mx: 99, my: 99 });
   const { viewport, gl } = useThree();
-  const geometry = useMemo(() => makeGeometry(count), [count]);
-  const material = useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        vertexShader: VERT,
-        fragmentShader: FRAG,
-        transparent: true,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-        uniforms: {
-          uTime: { value: 0 },
-          uMorph: { value: 0 },
-          uMouse: { value: new THREE.Vector2(99, 99) },
-          uPixelRatio: { value: 1 },
-          uSize: { value: 2.1 },
-          uColorA: { value: new THREE.Color("#d4ff3a") },
-          uColorB: { value: new THREE.Color("#8d93a8") },
-        },
-      }),
+  const { sphere, grid, seed } = useMemo(() => makeArrays(count), [count]);
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uMorph: { value: 0 },
+      uMouse: { value: new THREE.Vector2(99, 99) },
+      uPixelRatio: { value: 1 },
+      uSize: { value: 2.1 },
+      uColorA: { value: new THREE.Color("#d4ff3a") },
+      uColorB: { value: new THREE.Color("#8d93a8") },
+    }),
     [],
   );
 
   useEffect(() => {
-    material.uniforms.uPixelRatio.value = gl.getPixelRatio();
     const onMove = (e: PointerEvent) => {
       target.current.mx = (e.clientX / window.innerWidth) * 2 - 1;
       target.current.my = -((e.clientY / window.innerHeight) * 2 - 1);
@@ -136,14 +123,15 @@ function Field({ count, onReady }: { count: number; onReady: () => void }) {
     return () => {
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
-      geometry.dispose();
-      material.dispose();
     };
-  }, [gl, geometry, material, onReady]);
+  }, [onReady]);
 
   useFrame((_, dt) => {
+    const m = mat.current;
+    if (!m) return;
     const d = Math.min(dt, 0.05);
-    const u = material.uniforms;
+    const u = m.uniforms;
+    u.uPixelRatio.value = gl.getPixelRatio();
     u.uTime.value += d;
     const progress = window.scrollY / Math.max(1, window.innerHeight);
     const morphT = THREE.MathUtils.clamp(progress * 1.35, 0, 1);
@@ -152,27 +140,44 @@ function Field({ count, onReady }: { count: number; onReady: () => void }) {
     const far = target.current.mx > 50;
     const wx = far ? 99 : (target.current.mx * viewport.width) / 2;
     const wy = far ? 99 : (target.current.my * viewport.height) / 2;
-    const m = u.uMouse.value as THREE.Vector2;
-    m.x = THREE.MathUtils.damp(m.x, wx, 7, d);
-    m.y = THREE.MathUtils.damp(m.y, wy, 7, d);
+    const mouse = u.uMouse.value as THREE.Vector2;
+    mouse.x = THREE.MathUtils.damp(mouse.x, wx, 7, d);
+    mouse.y = THREE.MathUtils.damp(mouse.y, wy, 7, d);
 
-    if (group.current) {
-      group.current.rotation.y += d * 0.07;
+    const g = group.current;
+    if (g) {
+      g.rotation.y += d * 0.07;
       const tiltT = far ? 0 : target.current.my * 0.12;
-      group.current.rotation.x = THREE.MathUtils.damp(group.current.rotation.x, tiltT, 3, d);
+      g.rotation.x = THREE.MathUtils.damp(g.rotation.x, tiltT, 3, d);
       const narrow = viewport.aspect < 1;
       const tx = narrow ? 0 : viewport.width * 0.21;
       const ty = narrow ? 1.1 : 0.5;
       const sc = narrow ? Math.max(0.6, viewport.width / 6.5) : 1;
-      group.current.position.x = THREE.MathUtils.damp(group.current.position.x, tx, 4, d);
-      group.current.position.y = THREE.MathUtils.damp(group.current.position.y, ty, 4, d);
-      group.current.scale.setScalar(THREE.MathUtils.damp(group.current.scale.x, sc, 4, d));
+      g.position.x = THREE.MathUtils.damp(g.position.x, tx, 4, d);
+      g.position.y = THREE.MathUtils.damp(g.position.y, ty, 4, d);
+      g.scale.setScalar(THREE.MathUtils.damp(g.scale.x, sc, 4, d));
     }
   });
 
   return (
     <group ref={group}>
-      <points geometry={geometry} material={material} frustumCulled={false} />
+      <points frustumCulled={false}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[sphere, 3]} />
+          <bufferAttribute attach="attributes-aSphere" args={[sphere, 3]} />
+          <bufferAttribute attach="attributes-aGrid" args={[grid, 3]} />
+          <bufferAttribute attach="attributes-aSeed" args={[seed, 1]} />
+        </bufferGeometry>
+        <shaderMaterial
+          ref={mat}
+          uniforms={uniforms}
+          vertexShader={VERT}
+          fragmentShader={FRAG}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
     </group>
   );
 }

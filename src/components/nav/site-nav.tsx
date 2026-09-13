@@ -12,16 +12,20 @@ import { navItems } from "./nav-items";
 export function SiteNav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  // The menu is "open for a given path"; a route change closes it without an effect.
+  const [openAt, setOpenAt] = useState<string | null>(null);
+  const open = openAt === pathname;
+  const setOpen = (v: boolean) => setOpenAt(v ? pathname : null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    const id = requestAnimationFrame(onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
-
-  useEffect(() => setOpen(false), [pathname]);
 
   const onAnchor = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     const hash = href.split("#")[1];
@@ -75,7 +79,7 @@ export function SiteNav() {
           <button
             type="button"
             className="md:hidden rounded-full border border-line-2 px-4 py-1.5 font-mono text-[13px]"
-            onClick={() => setOpen((v) => !v)}
+            onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-controls="mobile-menu"
           >

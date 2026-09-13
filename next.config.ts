@@ -7,4 +7,4 @@ const nextConfig: NextConfig = {
   images: { formats: ["image/avif", "image/webp"] },
 };
 
-export default createMDX({})(nextConfig);
+export default createMDX({ options: { remarkPlugins: ["remark-gfm"] } })(nextConfig);

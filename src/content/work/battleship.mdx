@@ -1,0 +1,45 @@
+## The problem with one good idea
+
+Every strong Battleship agent in the literature picks a single technique. Nick Berry's 2011 probability-density approach counts, before every shot, how many legal placements of each remaining ship cover each cell and fires at the maximum. It reaches a median of 42 moves against random fleets and has been the benchmark ever since. Later work matched it. Nothing beat it.
+
+The strategies are not interchangeable, though. Probabilistic enumeration is sharp early, when the board is empty and the prior is all you have. Monte Carlo sampling gets better as constraints pile up. A learned model captures fleet-level placement habits that per-ship enumeration cannot express. An information-gain criterion doesn't estimate where ships are at all; it scores how much a shot would shrink the space of possibilities.
+
+So the question was simple: can an ensemble beat its components?
+
+## Four heatmaps, one decision
+
+Each strategy emits a heatmap over the 10×10 grid:
+
+1. **Probability density function.** Per-ship marginal prior from exhaustive placement enumeration. Deterministic, smooth, always available.
+2. **Convolutional neural network.** Trained on board states to predict occupancy; a learned refinement of the prior.
+3. **Monte Carlo occupancy sampling.** Sample complete fleets consistent with the observations and count where ships land. A joint posterior, noisy but constraint-aware.
+4. **Information-gain heuristic.** A decision-theoretic score computed from the occupancy estimates.
+
+Summing raw heatmaps saturates the board because the sources live on different scales. A convex combination avoids that but couples every weight to every other and dilutes each source as you add more. I used a **sequential, scale-preserving blend**: in a fixed order (PDF, CNN, Monte Carlo, information gain), each heatmap is rescaled to the magnitude of the running grid and mixed in, its weight being the fraction by which it overrides what was accumulated so far. Weights live independently in `[0, 1]`, a weight of zero means "this source contributes nothing", and mutating one weight only changes that source's influence.
+
+## Letting evolution pick the weights
+
+The sources interact, so the value of one weight depends on the others. The objective is non-convex, simulation-based, noisy and gradient-free. That is exactly the shape of problem a genetic algorithm is comfortable with.
+
+The four blend weights are a real-coded chromosome. Fitness combines win rate and average moves-to-win over simulated games. The GA runs offline; the deployed agent just uses the evolved weights.
+
+## What came out
+
+| Agent | Avg. moves to win |
+| --- | --- |
+| Strongest published single-strategy benchmarks | 42 to 45 |
+| Uniform-weight ensemble, identical architecture (AIAgent3) | ~44.5 |
+| **GA-tuned ensemble (AIAgent4)** | **40.5** |
+
+The GA-tuned agent outperforms every single-strategy component and improves on the uniform-weight ensemble by about four moves. That second comparison matters: it isolates the contribution of weight optimisation from the ensemble architecture itself. The evolved weights are interpretable, and the GA drove one of the four strategies to zero, effectively pruning a redundant source.
+
+<div className="aside">
+
+<span className="eyebrow block mb-2">What the demo above is running</span>
+The live demo ports the probability-density component and a light Monte Carlo sampler to TypeScript and blends them with the same sequential rule. The CNN and information-gain sources are not in the browser, so expect it to land in the mid-40s rather than at 40.5.
+
+</div>
+
+## Where it goes next
+
+The current work sits in a separate record-attempt lab with frozen holdouts and predeclared promotion gates: exact posterior marginals against cross-fitted full-horizon rollouts. Across 40 development boards the rollout policy averaged 46.35 shots to the marginal's 47.18, a difference whose interval still crosses zero, so it has not been promoted. The point of the gates is to make sure the next "record" is one.
