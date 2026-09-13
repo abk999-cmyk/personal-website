@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# abhinav.app
 
-## Getting Started
+Personal site of Abhinav Karthik. Next.js 16, React 19, TypeScript, Tailwind v4, react-three-fiber.
 
-First, run the development server:
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install        # .npmrc sets legacy-peer-deps for r3f's optional Expo peers
+npm run dev        # http://localhost:3000
+npm run build && npm start
+npm run lint && npm run typecheck
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Path | What |
+| --- | --- |
+| `src/content/*.ts` | All copy and data: profile, experience, projects, research, skills. Edit these, not the components. |
+| `src/content/work/*.mdx` | Long-form case studies, keyed by project slug in `index.ts`. GFM tables supported. |
+| `src/app/` | Routes: `/`, `/work/[slug]`, `/research`, `/resume`, sitemap, robots, OG image. |
+| `src/components/sections/` | Home-page sections in order: hero, now, work, research, experience, skills, about. |
+| `src/components/three/` | WebGL: hero particle field, skills constellation. Both fall back to static markup. |
+| `src/components/demos/` | Live canvas demos. Read `demos/README.md` before adding one; register it in `demo-embed.tsx`. |
+| `public/work/<slug>/` | Screenshots (WebP) referenced from `projects.ts`. |
+| `public/Abhinav_Karthik_Resume.pdf` | Generated from `/resume` with print styles (Playwright `page.pdf`). Regenerate after editing content. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Conventions
 
-## Learn More
+- One accent colour (`--color-accent`, lime). Everything else is the grey ramp in `globals.css`.
+- `prefers-reduced-motion` disables the WebGL hero, demo loops and reveals.
+- Papers under review are listed by topic, not title, until decisions land (`revealTitle` in `research.ts`).
+- No usage-based AI on the site. The chat bubble is Voiceflow's free tier.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel builds the GitHub default branch to abhinav.app and every other branch to a protected preview.

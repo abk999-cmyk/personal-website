@@ -144,7 +144,7 @@ export default function Demo({ mode = "tile" }: { mode?: Mode }) {
       if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(target.tagName))) {
         return;
       }
-      if (e.key === " ") {
+      if (e.key === " " || e.code === "Space") {
         e.preventDefault();
         if (player.ended) restart();
         else setPlaying((v) => !v);
@@ -247,7 +247,7 @@ export default function Demo({ mode = "tile" }: { mode?: Mode }) {
     <div className="w-full font-mono" role="group" aria-label="MaineHealth physician scheduler solve demo">
       <div
         ref={boxRef}
-        className="relative h-[380px] w-full overflow-hidden rounded-lg border border-line bg-surface md:h-[420px]"
+        className="relative h-[260px] w-full overflow-hidden rounded-lg border border-line bg-surface sm:h-[380px] md:h-[420px]"
       >
         <canvas ref={canvasRef} className="block" aria-hidden="true" />
       </div>

@@ -1,6 +1,5 @@
-import { skillGroups } from "@/content/skills";
 import { Section, SectionHeader } from "@/components/ui/section";
-import { Reveal } from "@/components/ui/reveal";
+import { SkillsExplorer } from "@/components/sections/skills-explorer";
 
 export function Skills() {
   return (
@@ -16,22 +15,7 @@ export function Skills() {
           </>
         }
       />
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-        {skillGroups.map((g, i) => (
-          <Reveal key={g.id} delay={i * 0.05} className={`rounded-2xl border border-line bg-surface p-6 ${i < 3 ? "lg:col-span-2" : "lg:col-span-3"}`}>
-            <p className="eyebrow" style={{ color: `oklch(0.8 0.17 ${g.hue})` }}>
-              {g.name}
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {g.skills.map((s) => (
-                <li key={s} className="rounded-full border border-line-2 px-3 py-1 text-[13px] text-text/85">
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        ))}
-      </div>
+      <SkillsExplorer />
     </Section>
   );
 }
