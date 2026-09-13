@@ -109,7 +109,7 @@ export function SiteNav() {
                   <Link
                     href={item.href}
                     onClick={(e) => onAnchor(e, item.href)}
-                    className="display block py-2 text-5xl text-text"
+                    className="display block py-2 text-[clamp(2.2rem,10.5vw,3.6rem)] text-text"
                   >
                     {item.label}
                   </Link>

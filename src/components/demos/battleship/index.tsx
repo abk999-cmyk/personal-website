@@ -19,7 +19,7 @@ const TILE_PAD = 10;
 const TILE_READOUT_H = 26;
 
 const BTN =
-  "rounded-full border border-line-2 px-3 py-1.5 font-mono text-[12px] text-text hover:border-text disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-line-2";
+  "rounded-full border border-line-2 px-3 py-1.5 font-mono text-[12px] text-text hover:border-text disabled:cursor-not-allowed disabled:border-line disabled:text-dim disabled:hover:border-line";
 const BTN_ON = `${BTN} bg-accent text-accent-ink border-accent`;
 const LABEL = "font-mono text-[11px] uppercase tracking-widest text-dim";
 

@@ -167,6 +167,7 @@ export interface EngineOptions {
 
 /** Immutable per-step readout for the UI. */
 export interface Snapshot {
+  seed: number;
   gen: number;
   phase: Phase;
   bestF: number;
@@ -277,6 +278,7 @@ export class DynDEGA {
   snapshot(): Snapshot {
     const b = this.pop[0];
     return {
+      seed: this.seed,
       gen: this.gen,
       phase: this.phase,
       bestF: -b.fit,

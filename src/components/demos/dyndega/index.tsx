@@ -243,7 +243,7 @@ export default function Demo({ mode = "tile" }: { mode?: "tile" | "full" }) {
   const switchedAt = snap?.switchedAt ?? null;
 
   const stage = (
-    <div ref={hostRef} className="absolute inset-0 overflow-hidden bg-ink">
+    <div ref={hostRef} className="absolute inset-0 overflow-hidden bg-ink" data-seed={snap?.seed ?? FIRST_SEED}>
       <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" aria-hidden />
       <div
         className={`pointer-events-none absolute left-3 top-3 rounded-md bg-ink/70 px-2 py-1 font-mono text-[11px] uppercase tracking-widest backdrop-blur-[2px] ${
