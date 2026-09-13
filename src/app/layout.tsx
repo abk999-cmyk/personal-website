@@ -1,48 +1,60 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono, Syne } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
-import { PageTransitionProvider } from "@/components/layout/page-transition-provider";
+import { SmoothScroll } from "@/components/providers/smooth-scroll";
+import { SiteNav } from "@/components/nav/site-nav";
+import { CommandPalette } from "@/components/nav/command-palette";
+import { Footer } from "@/components/layout/footer";
 import { VoiceflowWidget } from "@/components/integrations/voiceflow-widget";
+import { profile } from "@/content/profile";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-syne",
   display: "swap",
 });
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-display",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500"],
-});
+const description =
+  "AI engineer in Boston. Agents, optimisation and evolutionary systems: a Battleship engine that beats the 2011 record, a MILP scheduler for a cardiovascular service line, long-term memory for a commercial agent.";
 
 export const metadata: Metadata = {
-  title: "Abhinav Karthik · AI Engineer",
-  description: "An elegant, extensible digital home for Abhinav's experiments in AI engineering and design.",
+  metadataBase: new URL(profile.links.site),
+  title: { default: `${profile.name} — AI Engineer`, template: `%s — ${profile.name}` },
+  description,
+  openGraph: {
+    type: "website",
+    url: profile.links.site,
+    siteName: profile.name,
+    title: `${profile.name} — AI Engineer`,
+    description,
+  },
+  twitter: { card: "summary_large_image", title: `${profile.name} — AI Engineer`, description },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: "#0a0a0b",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
-      >
+    <html lang="en" className={`${syne.variable} ${geist.variable} ${geistMono.variable}`}>
+      <body className="bg-ink text-text antialiased">
+        <SmoothScroll />
+        <SiteNav />
+        <CommandPalette />
+        <main id="main">{children}</main>
+        <Footer />
         <VoiceflowWidget />
-        <div className="app-shell">
-          <PageTransitionProvider>{children}</PageTransitionProvider>
-        </div>
+        <Analytics />
       </body>
     </html>
   );

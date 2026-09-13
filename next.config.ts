@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  pageExtensions: ["ts", "tsx", "md", "mdx"],
+  reactStrictMode: true,
+  images: { formats: ["image/avif", "image/webp"] },
 };
 
-export default nextConfig;
+export default createMDX({})(nextConfig);
