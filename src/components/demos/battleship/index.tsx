@@ -18,9 +18,10 @@ const BENCHMARK_MOVES = 42;
 const TILE_PAD = 10;
 const TILE_READOUT_H = 26;
 
-const BTN =
-  "rounded-full border border-line-2 px-3 py-1.5 font-mono text-[12px] text-text hover:border-text disabled:cursor-not-allowed disabled:border-line disabled:text-dim disabled:hover:border-line";
-const BTN_ON = `${BTN} bg-accent text-accent-ink border-accent`;
+const BTN_BASE =
+  "rounded-full border px-3 py-1.5 font-mono text-[12px] disabled:cursor-not-allowed disabled:border-line disabled:text-dim";
+const BTN = `${BTN_BASE} border-line-2 text-text hover:border-text disabled:hover:border-line`;
+const BTN_ON = `${BTN_BASE} border-accent bg-accent text-accent-ink`;
 const LABEL = "font-mono text-[11px] uppercase tracking-widest text-dim";
 
 interface Placing {
@@ -485,7 +486,7 @@ export default function Demo({ mode = "tile" }: { mode?: "tile" | "full" }) {
   const bars = ui.history.slice(-48);
 
   return (
-    <div className="flex w-full flex-col gap-5 md:flex-row md:items-start">
+    <div className="flex w-full flex-col gap-6 p-5 md:flex-row md:items-start md:gap-8 md:p-6 lg:p-8">
       <div
         ref={wrapRef}
         className={`relative aspect-square w-full max-w-[520px] shrink-0 select-none ${placing ? "touch-none" : ""}`}

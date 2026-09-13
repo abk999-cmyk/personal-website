@@ -6,7 +6,6 @@ import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { SiteNav } from "@/components/nav/site-nav";
 import { CommandPalette } from "@/components/nav/command-palette";
 import { Footer } from "@/components/layout/footer";
-import { VoiceflowWidget } from "@/components/integrations/voiceflow-widget";
 import { profile } from "@/content/profile";
 import "./globals.css";
 
@@ -53,7 +52,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <CommandPalette />
         <main id="main">{children}</main>
         <Footer />
-        <VoiceflowWidget />
         <Analytics />
       </body>
     </html>

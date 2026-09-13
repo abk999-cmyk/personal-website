@@ -29,7 +29,7 @@ npm run lint && npm run typecheck
 - One accent colour (`--color-accent`, lime). Everything else is the grey ramp in `globals.css`.
 - `prefers-reduced-motion` disables the WebGL hero, demo loops and reveals.
 - Papers under review are listed by topic, not title, until decisions land (`revealTitle` in `research.ts`).
-- No usage-based AI on the site. The chat bubble is Voiceflow's free tier.
+- No usage-based AI on the site, and no chat widget.
 
 ## Deploy
 
