@@ -104,16 +104,17 @@ export default function Demo({ mode = "tile" }: { mode?: "tile" | "full" }) {
         renderer.resize(r.width, r.height, dpr());
         renderer.draw(engine);
       };
+      paint();
       const ro = new ResizeObserver(paint);
       ro.observe(host);
-      const raf = requestAnimationFrame(() => {
-        paint();
+      // Timer rather than rAF so the readouts appear even if frames are starved.
+      const timer = window.setTimeout(() => {
         setSnap(engine.snapshot());
         setFlashing(false);
-      });
+      }, 0);
       return () => {
         ro.disconnect();
-        cancelAnimationFrame(raf);
+        window.clearTimeout(timer);
       };
     }
 
@@ -214,12 +215,12 @@ export default function Demo({ mode = "tile" }: { mode?: "tile" | "full" }) {
     const r0 = host.getBoundingClientRect();
     renderer.resize(r0.width, r0.height, dpr());
     renderer.draw(engine);
-    const first = requestAnimationFrame(publish);
+    const first = window.setTimeout(publish, 0);
     sync();
 
     return () => {
       stop();
-      cancelAnimationFrame(first);
+      window.clearTimeout(first);
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", sync);
@@ -229,7 +230,7 @@ export default function Demo({ mode = "tile" }: { mode?: "tile" | "full" }) {
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (!full) return;
     const onButton = (e.target as HTMLElement).tagName === "BUTTON";
-    if (e.key === " " && !onButton) {
+    if ((e.key === " " || e.code === "Space") && !onButton) {
       e.preventDefault();
       setPlaying((p) => !p);
     } else if (e.key === "r" || e.key === "R") {
@@ -324,7 +325,7 @@ export default function Demo({ mode = "tile" }: { mode?: "tile" | "full" }) {
           Restart
         </button>
         <button type="button" className={BTN} onClick={() => setPlaying((p) => !p)} disabled={reduced}>
-          {playing ? "Pause" : "Play"}
+          {reduced ? "Static" : playing ? "Pause" : "Play"}
         </button>
         <div className="flex gap-1.5" role="group" aria-label="Speed">
           {([1, 3] as const).map((s) => (
