@@ -15,6 +15,7 @@ const registry: Record<string, Loader> = {
   arena: () => import("./arena"),
   battleship: () => import("./battleship"),
   scheduler: () => import("./scheduler"),
+  dyndega: () => import("./dyndega"),
 };
 
 function Skeleton({ label }: { label?: string }) {

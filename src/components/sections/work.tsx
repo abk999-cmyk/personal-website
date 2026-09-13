@@ -28,7 +28,7 @@ export function Work() {
             actually poke at.
           </>
         }
-        intro="Research that turned into products, products that turned into research. The first three run live in your browser."
+        intro="Research that turned into products, products that turned into research. Four of them run live in your browser."
       />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12 lg:auto-rows-[minmax(300px,auto)]">
