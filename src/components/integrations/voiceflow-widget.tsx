@@ -35,9 +35,20 @@ export function VoiceflowWidget() {
     s.type = "text/javascript";
     s.async = true;
     s.onload = load;
-    const start = () => document.body.appendChild(s);
-    if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(start, { timeout: 4000 });
-    else window.setTimeout(start, 2500);
+    let done = false;
+    const start = () => {
+      if (done) return;
+      done = true;
+      cleanup();
+      document.body.appendChild(s);
+    };
+    const events: (keyof WindowEventMap)[] = ["pointerdown", "keydown", "scroll", "touchstart"];
+    const timer = window.setTimeout(start, 8000);
+    const cleanup = () => {
+      window.clearTimeout(timer);
+      for (const ev of events) window.removeEventListener(ev, start);
+    };
+    for (const ev of events) window.addEventListener(ev, start, { once: true, passive: true });
   }, []);
   return null;
 }

@@ -91,6 +91,8 @@ const HAPPINESS_START = 52;
 
 /** Cap slack over the round-robin minimum for per-quarter service limits. */
 const CAP_SLACK = 1.75;
+/** Score bonus for continuing last week's service (block variable compression). */
+const BLOCK_BONUS = 4;
 
 export interface Requirement {
   readonly service: number;
@@ -356,7 +358,9 @@ export function buildSchedule(seed: number, rowsWanted: number): Solve {
       if (service === CALL) {
         score = count * 3 + (prev === CALL ? 6 : 0) + rng();
       } else {
-        score = total[r] + count * 3 - (prev === service ? 2 : 0) + rng();
+        // Workload balance first, then spread the service across the quarter,
+        // with a block-continuity bonus so assignments form multi-week runs.
+        score = total[r] + count * 3 - (prev === service ? BLOCK_BONUS : 0) + rng();
       }
       if (count < grp.cap[service]) {
         if (score < bestScore) {

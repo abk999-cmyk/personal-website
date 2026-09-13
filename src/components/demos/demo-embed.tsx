@@ -13,6 +13,7 @@ type Loader = () => Promise<{ default: ComponentType<DemoProps> }>;
  */
 const registry: Record<string, Loader> = {
   arena: () => import("./arena"),
+  battleship: () => import("./battleship"),
 };
 
 function Skeleton({ label }: { label?: string }) {

@@ -8,6 +8,23 @@ const LatentField = dynamic(() => import("./latent-field").then((m) => m.LatentF
   loading: () => <Poster />,
 });
 
+/**
+ * True when WebGL is available and not running on a software rasteriser
+ * (SwiftShader, llvmpipe). Software GL would burn the main thread on 20k points.
+ */
+function hasHardwareWebGL() {
+  try {
+    const c = document.createElement("canvas");
+    const gl = (c.getContext("webgl2") || c.getContext("webgl")) as WebGLRenderingContext | null;
+    if (!gl) return false;
+    const ext = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
+    return !/swiftshader|llvmpipe|software|mesa offscreen/i.test(renderer);
+  } catch {
+    return false;
+  }
+}
+
 /** Static fallback: reduced motion, no WebGL, or while the field loads. */
 function Poster() {
   return (
@@ -23,15 +40,15 @@ export function HeroField() {
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let gl: RenderingContext | null = null;
-    try {
-      const c = document.createElement("canvas");
-      gl = c.getContext("webgl2") || c.getContext("webgl");
-    } catch {
-      gl = null;
-    }
-    const id = requestAnimationFrame(() => setMode(!reduce && gl ? "3d" : "poster"));
-    return () => cancelAnimationFrame(id);
+    const mode = !reduce && hasHardwareWebGL() ? "3d" : "poster";
+    // Let the hero text paint first; the poster covers the gap.
+    const idle = typeof window.requestIdleCallback === "function"
+      ? window.requestIdleCallback(() => setMode(mode), { timeout: 1500 })
+      : window.setTimeout(() => setMode(mode), 400);
+    return () => {
+      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idle as number);
+      else window.clearTimeout(idle as number);
+    };
   }, []);
 
   return (

@@ -187,7 +187,8 @@ export function LatentField() {
   const wrap = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
   const [ready, setReady] = useState(false);
-  const count = typeof window !== "undefined" && window.innerWidth < 768 ? 9000 : 22000;
+  const narrow = typeof window !== "undefined" && window.innerWidth < 768;
+  const count = narrow ? 6000 : 22000;
 
   useEffect(() => {
     const el = wrap.current;
@@ -205,7 +206,7 @@ export function LatentField() {
       aria-hidden
     >
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, narrow ? 1.25 : 1.5]}
         frameloop={visible ? "always" : "never"}
         gl={{ antialias: false, alpha: true, powerPreference: "high-performance", stencil: false, depth: false }}
         camera={{ position: [0, 0, 6.6], fov: 42, near: 0.1, far: 40 }}
