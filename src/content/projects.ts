@@ -30,7 +30,7 @@ export type ProjectImage = {
   caption?: string;
 };
 
-export const projects: Project[] = [
+const allProjects: Project[] = [
   {
     slug: "battleship",
     name: "Battleship ensemble agent",
@@ -277,6 +277,8 @@ export const projects: Project[] = [
   },
 ];
 
+// Temporarily unpublished while its screenshots are reviewed.
+export const projects = allProjects.filter((p) => p.slug !== "7d-connect");
 export const featuredProjects = projects.filter((p) => p.featured);
 export const moreProjects = projects.filter((p) => !p.featured);
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
